@@ -2,6 +2,7 @@ import os
 import math
 
 import cereal.messaging as messaging
+from common.numpy_fast import clip, interp
 from selfdrive.swaglog import cloudlog
 from common.realtime import sec_since_boot
 from selfdrive.controls.lib.radar_helpers import _LEAD_ACCEL_TAU
@@ -27,6 +28,7 @@ class LongitudinalMpc():
     self.last_cloudlog_t = 0.0
     self.n_its = 0
     self.duration = 0
+    self.cruise_gap = 0	
 
   def publish(self, pm):
     if LOG_MPC:
@@ -94,7 +96,11 @@ class LongitudinalMpc():
 
     # Calculate mpc
     t = sec_since_boot()
-    TR = 1.8
+    cruise_gap = int(clip(CS.cruiseGap, 1., 3.))	
+    # TRatio = interp(float(cruise_gap), [1., 2., 3.], [1.0, 1.1, 1.2])	
+    TR = interp(v_ego, [3., 30.], [1., 1.8]) * TRatio
+    if self.cruise_gap != cruise_gap:
+      self.cruise_gap = cruise_gap
     self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead, TR)
     self.duration = int((sec_since_boot() - t) * 1e9)
 
