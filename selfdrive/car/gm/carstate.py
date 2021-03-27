@@ -94,6 +94,9 @@ class CarState(CarStateBase):
     ret.autoHoldActivated = self.autoHoldActivated
     return ret
 
+  def get_follow_level(self):
+    return self.follow_level  
+  
   @staticmethod
   def get_can_parser(CP):
     # this function generates lists for signal, messages and initial values
