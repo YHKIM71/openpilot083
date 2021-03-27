@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from cereal import car
+from common.numpy_fast import interp
 from selfdrive.config import Conversions as CV
 from selfdrive.car.gm.values import CAR, CruiseButtons, \
                                     AccState
@@ -38,12 +39,12 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
     ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.2], [0.00]]
     ret.lateralTuning.pid.kf = 0.00004   # full torque for 20 deg at 80mph means 0.00007818594
-    ret.steerRateCost = 1.0
+    ret.steerRateCost = 0.7
     ret.steerActuatorDelay = 0.1  # Default delay, not measured yet
 
     if candidate == CAR.VOLT:
       # supports stop and go, but initial engage must be above 18mph (which include conservatism)
-      ret.minEnableSpeed = 18 * CV.MPH_TO_MS
+      ret.minEnableSpeed = -1
       ret.mass = 1607. + STD_CARGO_KG
       ret.wheelbase = 2.69
       ret.steerRatio = 15.7
@@ -120,6 +121,11 @@ class CarInterface(CarInterfaceBase):
 
     ret = self.CS.update(self.cp)
 
+    cruiseEnabled = self.CS.pcm_acc_status != AccState.OFF
+    ret.cruiseState.enabled = cruiseEnabled
+
+    ret.cruiseGap = self.CS.follow_level
+    
     ret.canValid = self.cp.can_valid
     ret.steeringRateLimited = self.CC.steer_rate_limited if self.CC is not None else False
 
@@ -138,6 +144,8 @@ class CarInterface(CarInterfaceBase):
         if not (ret.cruiseState.enabled and ret.standstill):
           be.type = ButtonType.accelCruise  # Suppress resume button if we're resuming from stop so we don't adjust speed.
       elif but == CruiseButtons.DECEL_SET:
+        if not cruiseEnabled and not self.CS.lkMode:
+          self.lkMode = True
         be.type = ButtonType.decelCruise
       elif but == CruiseButtons.CANCEL:
         be.type = ButtonType.cancel
@@ -146,6 +154,13 @@ class CarInterface(CarInterfaceBase):
       buttonEvents.append(be)
 
     ret.buttonEvents = buttonEvents
+    if cruiseEnabled and self.CS.lka_button and self.CS.lka_button != self.CS.prev_lka_button:
+      self.CS.lkMode = not self.CS.lkMode
+
+    if self.CS.distance_button and self.CS.distance_button != self.CS.prev_distance_button:
+       self.CS.follow_level -= 1
+       if self.CS.follow_level < 1:
+         self.CS.follow_level = 3
 
     events = self.create_common_events(ret, pcm_enable=False)
 
@@ -159,7 +174,9 @@ class CarInterface(CarInterfaceBase):
       events.add(EventName.controlsFailed)
     if ret.vEgo < self.CP.minSteerSpeed:
       events.add(car.CarEvent.EventName.belowSteerSpeed)
-
+    if self.CS.autoHoldActivated:
+      events.add(car.CarEvent.EventName.autoHoldActivated)
+	  
     # handle button presses
     for b in ret.buttonEvents:
       # do enable on both accel and decel buttons
@@ -191,4 +208,15 @@ class CarInterface(CarInterfaceBase):
                                c.hudControl.leadVisible, c.hudControl.visualAlert)
 
     self.frame += 1
+
+    # Release Auto Hold and creep smoothly when regenpaddle pressed
+    if self.CS.regenPaddlePressed and self.CS.autoHold:
+      self.CS.autoHoldActive = False
+
+    if self.CS.autoHold and not self.CS.autoHoldActive and not self.CS.regenPaddlePressed:
+      if self.CS.out.vEgo > 0.02:
+        self.CS.autoHoldActive = True
+      elif self.CS.out.vEgo < 0.01 and self.CS.out.brakePressed:
+        self.CS.autoHoldActive = True
+        
     return can_sends

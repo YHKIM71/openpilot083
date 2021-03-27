@@ -13,12 +13,29 @@ class CarState(CarStateBase):
     super().__init__(CP)
     can_define = CANDefine(DBC[CP.carFingerprint]['pt'])
     self.shifter_values = can_define.dv["ECMPRDNL"]["PRNDL"]
+      
+    self.prev_distance_button = 0
+    self.prev_lka_button = 0
+    self.lka_button = 0
+    self.distance_button = 0
+    self.follow_level = 2
+    self.lkMode = True
+    self.autoHold = False
+    self.autoHoldActive = False
+    self.autoHoldActivated = False
+    self.regenPaddlePressed = 0
+    self.cruiseMain = False
+
 
   def update(self, pt_cp):
     ret = car.CarState.new_message()
 
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = pt_cp.vl["ASCMSteeringButton"]['ACCButtons']
+    self.prev_lka_button = self.lka_button
+    self.lka_button = pt_cp.vl["ASCMSteeringButton"]["LKAButton"]
+    self.prev_distance_button = self.distance_button
+    self.distance_button = pt_cp.vl["ASCMSteeringButton"]["DistanceButton"]
 
     ret.wheelSpeeds.fl = pt_cp.vl["EBCMWheelSpdFront"]['FLWheelSpd'] * CV.KPH_TO_MS
     ret.wheelSpeeds.fr = pt_cp.vl["EBCMWheelSpdFront"]['FRWheelSpd'] * CV.KPH_TO_MS
@@ -60,17 +77,21 @@ class CarState(CarStateBase):
 
     self.park_brake = pt_cp.vl["EPBStatus"]['EPBClosed']
     ret.cruiseState.available = bool(pt_cp.vl["ECMEngineStatus"]['CruiseMainOn'])
+    self.cruiseMain = ret.cruiseState.available
     ret.espDisabled = pt_cp.vl["ESPStatus"]['TractionControlOn'] != 1
     self.pcm_acc_status = pt_cp.vl["AcceleratorPedal2"]['CruiseState']
 
     ret.brakePressed = ret.brake > 1e-5
     # Regen braking is braking
     if self.car_fingerprint == CAR.VOLT:
-      ret.brakePressed = ret.brakePressed or bool(pt_cp.vl["EBCMRegenPaddle"]['RegenPaddle'])
-
+      self.regenPaddlePressed = bool(pt_cp.vl["EBCMRegenPaddle"]['RegenPaddle'])
+      ret.brakePressed = ret.brakePressed or self.regenPaddlePressed
+      
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
-    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
-
+    ret.cruiseState.standstill = False
+#    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
+    self.autoHold = True
+    ret.autoHoldActivated = self.autoHoldActivated
     return ret
 
   @staticmethod
@@ -102,6 +123,9 @@ class CarState(CarStateBase):
       ("TractionControlOn", "ESPStatus", 0),
       ("EPBClosed", "EPBStatus", 0),
       ("CruiseMainOn", "ECMEngineStatus", 0),
+      ("LKAButton", "ASCMSteeringButton", 0),
+      ("DistanceButton", "ASCMSteeringButton", 0),
+      ("LKATorqueDelivered", "PSCMStatus", 0),
     ]
 
     if CP.carFingerprint == CAR.VOLT:

@@ -101,6 +101,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     gpsMalfunction @94;
     processNotRunning @95;
     dashcamMode @96;
+    autoHoldActivated @97;
 
     radarCanErrorDEPRECATED @15;
     radarCommIssueDEPRECATED @67;
@@ -187,6 +188,10 @@ struct CarState {
   leftBlindspot @33 :Bool; # Is there something blocking the left lane change
   rightBlindspot @34 :Bool; # Is there something blocking the right lane change
 
+  cruiseGap @37 : Int32;
+  lkMode @38 :Bool;
+  autoHoldActivated @39 :Bool;
+  
   struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
@@ -326,6 +331,7 @@ struct CarControl {
       seatbeltUnbuckled @5;
       speedTooHigh @6;
       ldw @7;
+      autoHoldActivated @8;
     }
 
     enum AudibleAlert {
