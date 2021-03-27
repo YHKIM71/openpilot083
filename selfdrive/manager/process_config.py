@@ -23,7 +23,7 @@ procs = [
   PythonProcess("deleter", "selfdrive.loggerd.deleter", persistent=True),
   PythonProcess("dmonitoringd", "selfdrive.monitoring.dmonitoringd", enabled=(not PC or WEBCAM), driverview=True),
   PythonProcess("locationd", "selfdrive.locationd.locationd"),
-  PythonProcess("logmessaged", "selfdrive.logmessaged", persistent=True),
+#  PythonProcess("logmessaged", "selfdrive.logmessaged", persistent=True),
   PythonProcess("pandad", "selfdrive.pandad", persistent=True),
   PythonProcess("paramsd", "selfdrive.locationd.paramsd"),
   PythonProcess("plannerd", "selfdrive.controls.plannerd"),
@@ -31,7 +31,7 @@ procs = [
   PythonProcess("rtshield", "selfdrive.rtshield", enabled=EON),
   PythonProcess("thermald", "selfdrive.thermald.thermald", persistent=True),
   PythonProcess("timezoned", "selfdrive.timezoned", enabled=TICI, persistent=True),
-  PythonProcess("tombstoned", "selfdrive.tombstoned", enabled=not PC, persistent=True),
+#  PythonProcess("tombstoned", "selfdrive.tombstoned", enabled=not PC, persistent=True),
 #  PythonProcess("updated", "selfdrive.updated", enabled=not PC, persistent=True),
 #  PythonProcess("uploader", "selfdrive.loggerd.uploader", persistent=True),
 ]
