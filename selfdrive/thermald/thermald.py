@@ -212,7 +212,7 @@ def thermald_thread():
 
 #      startup_conditions["hardware_supported"] = pandaState.pandaState.pandaType not in [log.PandaState.PandaType.whitePanda,
 #                                                                                         log.PandaState.PandaType.greyPanda]
-      set_offroad_alert_if_changed("Offroad_HardwareUnsupported", not startup_conditions["hardware_supported"])
+#      set_offroad_alert_if_changed("Offroad_HardwareUnsupported", not startup_conditions["hardware_supported"])
 
       # Setup fan handler on first connect to panda
       if handle_fan is None and pandaState.pandaState.pandaType != log.PandaState.PandaType.unknown:
