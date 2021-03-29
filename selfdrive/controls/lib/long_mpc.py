@@ -111,7 +111,7 @@ class LongitudinalMpc():
     TRatio = interp(float(cruise_gap), [1., 2., 3.], [1.0, 1.2, 1.5])	
 
     #    TR = interp(v_ego, [3., 40.], [0.8, 1.2]) * TRatio
-    TR = interp(v_ego, v_ego_BP, v_ego_PROFILE) + (-self.v_rel, v_rel_BP, v_rel_PROFILE)
+    TR = interp(v_ego, v_ego_BP, v_ego_PROFILE) + interp(-self.v_rel, v_rel_BP, v_rel_PROFILE)
     TR = clip(TR * TRatio, 0., 1.9)
                 
     if self.cruise_gap != cruise_gap:
