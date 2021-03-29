@@ -518,12 +518,14 @@ struct ControlsState @0x97ff69c53601abf1 {
 
   cumLagMs @15 :Float32;
   canErrorCounter @57 :UInt32;
+  roadLimitSpeed @58 :Int32;
+  roadLimitSpeedLeftDist @59 :Int32;
 
   lateralControlState :union {
     indiState @52 :LateralINDIState;
     pidState @53 :LateralPIDState;
     lqrState @55 :LateralLQRState;
-    angleState @58 :LateralAngleState;
+    angleState @60 :LateralAngleState;
   }
 
   enum OpenpilotState @0xdbe58b96d2d1ac61 {
