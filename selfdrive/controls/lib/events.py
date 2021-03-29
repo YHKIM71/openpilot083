@@ -759,4 +759,8 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0.4, .3),
   },
 
+  EventName.slowingDownSpeed: {
+    ET.PERMANENT: Alert("Slowing down","", AlertStatus.normal, AlertSize.small,
+      Priority.MID, VisualAlert.none, AudibleAlert.none, 0., .1, .1),
+  },
 }
