@@ -96,7 +96,6 @@ class LongitudinalMpc():
       self.cur_state[0].v_l = v_ego + 10.0
       a_lead = 0.0
       self.a_lead_tau = _LEAD_ACCEL_TAU
-
     # Calculate conditions
     self.v_rel = v_lead - v_ego   # calculate relative velocity vs lead car
 
