@@ -9,7 +9,7 @@ from selfdrive.controls.lib.radar_helpers import _LEAD_ACCEL_TAU
 from selfdrive.controls.lib.longitudinal_mpc import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LONG
 
-STOPPING_DISTANCE = 1
+STOPPING_DISTANCE = 2
 
 LOG_MPC = os.environ.get('LOG_MPC', False)
 
@@ -102,7 +102,7 @@ class LongitudinalMpc():
 
     # interpolation values
     v_ego_BP = [3., 40.]
-    v_ego_PROFILE = [0.8, 1.3]
+    v_ego_PROFILE = [0.9, 1.3]
     v_rel_BP = [-0.1, 2.]
     v_rel_PROFILE = [0., 0.4]
     
