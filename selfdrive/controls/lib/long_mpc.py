@@ -66,6 +66,7 @@ class LongitudinalMpc():
 
   def update(self, CS, lead):
     v_ego = CS.vEgo
+    v_lead = 0
 
     # Setup current mpc state
     self.cur_state[0].x_ego = 0.0
