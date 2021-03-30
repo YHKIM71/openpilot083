@@ -307,7 +307,7 @@ class Controls:
     elif self.CP.enableCruise and CS.cruiseState.enabled:
       self.v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
 
-    limit_speed, self.road_limit_speed, self.road_limit_left_dist = road_speed_limiter_get_max_speed(CS, self.v_cruise_kph)
+    limit_speed, self.road_limit_speed, self.road_limit_left_dist, first_started, log = road_speed_limiter_get_max_speed(CS, self.v_cruise_kph)
 
     if limit_speed > 20:
       self.v_cruise_kph_limit = min(limit_speed, self.v_cruise_kph)
