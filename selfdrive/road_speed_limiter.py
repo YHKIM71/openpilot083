@@ -113,7 +113,7 @@ class RoadSpeedLimiter:
       #log += ", " + str(section_limit_speed)
       #log += ", " + str(section_left_dist)
 
-      v_ego = CS.clu11["CF_Clu_Vanz"] / 3.6
+      v_ego = CS.vEgo
 
       if cam_limit_speed_left_dist is not None and cam_limit_speed is not None and cam_limit_speed_left_dist > 0:
 
