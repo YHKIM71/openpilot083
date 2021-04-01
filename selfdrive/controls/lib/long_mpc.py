@@ -9,12 +9,12 @@ from selfdrive.controls.lib.radar_helpers import _LEAD_ACCEL_TAU
 from selfdrive.controls.lib.longitudinal_mpc import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LONG
 
-TR_FIX = True
+TR_FIX = False
 
 if TR_FIX:
   STOPPING_DISTANCE = 2
 else:
-  STOPPING_DISTANCE = 1
+  STOPPING_DISTANCE = 1.5
 
 LOG_MPC = os.environ.get('LOG_MPC', False)
 
@@ -115,7 +115,7 @@ class LongitudinalMpc():
     else:
       baseTR = interp(float(cruise_gap), [1., 2., 3.], [0.9, 1.3, 1.8])
       if v_ego <= 20.0:
-        TR = interp(-self.v_rel, [-0.1, 2.5], [baseTR, 1.8])
+        TR = interp(-self.v_rel, [-0.1, 3.0], [baseTR, 2.1])
       else:
         TR = interp(-self.v_rel, [0, 3.5], [baseTR, 1.8])
       
