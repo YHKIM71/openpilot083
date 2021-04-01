@@ -10,6 +10,7 @@
 #include "nanovg_gl_utils.h"
 #include "paint.hpp"
 #include "sidebar.hpp"
+#include "extras.h"
 
 // TODO: this is also hardcoded in common/transformations/camera.py
 // TODO: choose based on frame input size
@@ -283,6 +284,7 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_vision_maxspeed(s);
   ui_draw_vision_speed(s);
   ui_draw_vision_event(s);
+  ui_draw_extras(s);
 }
 
 static void ui_draw_vision_footer(UIState *s) {
