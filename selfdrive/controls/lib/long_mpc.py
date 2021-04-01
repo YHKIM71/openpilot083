@@ -107,7 +107,7 @@ class LongitudinalMpc():
         
     if TR_FIX:
       TR = interp(float(cruise_gap), [1., 2., 3.], [1.1, 1.4, 1.8])
-      STOPPING_DISTANCE = 2
+
     else:
       baseTR = interp(float(cruise_gap), [1., 2., 3.], [0.9, 1.3, 1.8])
       if v_ego <= 20.0:
