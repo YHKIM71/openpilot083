@@ -12,6 +12,8 @@
 #include "sidebar.hpp"
 #include "extras.h"
 
+int border_shifter = 20; //Use this to move elements around depending on how much bdr_s is changed -wirelessnet2
+
 // TODO: this is also hardcoded in common/transformations/camera.py
 // TODO: choose based on frame input size
 #ifdef QCOM2
@@ -21,6 +23,8 @@ const float zoom = 1.1;
 const float y_offset = 0.0;
 const float zoom = 2.35;
 #endif
+
+const int bdr_is = 30;
 
 static void ui_draw_text(const UIState *s, float x, float y, const char *string, float size, NVGcolor color, const char *font_name) {
   nvgFontFace(s->vg, font_name);
@@ -230,6 +234,13 @@ static void ui_draw_vision_face(UIState *s) {
   ui_draw_circle_image(s, face_x, face_y, face_size, "driver_face", s->scene.dmonitoring_state.getIsActiveMode());
 }
 
+static void ui_draw_vision_brake(UIState *s) {
+  const int brake_size = 80;
+  const int brake_x = (s->viz_rect.x + brake_size + (bdr_is * 2) + 255); //That 55 is kinda random -wirelessnet2
+  const int brake_y = (s->viz_rect.bottom() - footer_h + ((footer_h - brake_size) / 2));
+  ui_draw_circle_image(s, brake_x, brake_y+border_shifter+25, brake_size, "brake_disk", s->scene.brakeLights);
+}
+
 static void ui_draw_driver_view(UIState *s) {
   s->sidebar_collapsed = true;
   const bool is_rhd = s->scene.is_rhd;
@@ -289,6 +300,8 @@ static void ui_draw_vision_header(UIState *s) {
 
 static void ui_draw_vision_footer(UIState *s) {
   ui_draw_vision_face(s);
+  ui_draw_vision_brake(s);
+//  bb_ui_draw_UI(s);
 }
 
 static float get_alert_alpha(float blink_rate) {
@@ -523,6 +536,7 @@ void ui_nvg_init(UIState *s) {
       {"driver_face", "../assets/img_driver_face.png"},
       {"button_settings", "../assets/images/button_settings.png"},
       {"button_home", "../assets/images/button_home.png"},
+      {"brake_disk", "../assets/img_brake_disc.png"},
       {"battery", "../assets/images/battery.png"},
       {"battery_charging", "../assets/images/battery_charging.png"},
       {"network_0", "../assets/images/network_0.png"},
