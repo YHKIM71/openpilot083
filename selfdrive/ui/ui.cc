@@ -258,6 +258,7 @@ static void update_alert(UIState *s) {
     scene.alert_blinking_rate = scene.controls_state.getAlertBlinkingRate();
   }
 
+  /*
   // Handle controls timeout
   if (scene.deviceState.getStarted() && (s->sm->frame - scene.started_frame) > 10 * UI_FREQ) {
     const uint64_t cs_frame = s->sm->rcv_frame("controlsState");
@@ -278,7 +279,7 @@ static void update_alert(UIState *s) {
       scene.alert_size = cereal::ControlsState::AlertSize::FULL;
       s->status = STATUS_ALERT;
     }
-  }
+  }*/
 }
 
 static void update_params(UIState *s) {
