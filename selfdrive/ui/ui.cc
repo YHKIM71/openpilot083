@@ -257,7 +257,7 @@ static void update_alert(UIState *s) {
     scene.alert_type = scene.controls_state.getAlertType();
     scene.alert_blinking_rate = scene.controls_state.getAlertBlinkingRate();
   }
-
+/*
   // Handle controls timeout
   if (scene.deviceState.getStarted() && (s->sm->frame - scene.started_frame) > 10 * UI_FREQ) {
     const uint64_t cs_frame = s->sm->rcv_frame("controlsState");
@@ -280,7 +280,7 @@ static void update_alert(UIState *s) {
     }
   }
 }
-
+*/
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
