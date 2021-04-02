@@ -97,6 +97,11 @@ typedef struct UIScene {
 
   bool is_rhd;
   bool driver_view;
+  Rect viz_rect;
+  int ui_viz_ro;
+
+  int lead_status;
+  float lead_d_rel, lead_v_rel;
 
   std::string alert_text1;
   std::string alert_text2;
@@ -113,6 +118,20 @@ typedef struct UIScene {
   cereal::ControlsState::Reader controls_state;
   cereal::DriverState::Reader driver_state;
   cereal::DriverMonitoringState::Reader dmonitoring_state;
+
+  float angleSteers;
+  bool brakeLights;
+  float angleSteersDes;
+  bool recording;
+  float gpsAccuracyUblox;
+  float altitudeUblox;
+  int engineRPM;
+  bool steerOverride;
+  float output_scale;
+  float steeringTorqueEps;
+  float aEgo;
+  float cpuTemp;
+  int cpuPerc;
 
   // gps
   int satelliteCount;
@@ -144,7 +163,10 @@ typedef struct UIState {
 
   // NVG
   NVGcontext *vg;
-
+  // fonts and images
+  int font_sans_regular;
+  int font_sans_semibold;
+  int font_sans_bold;
   // images
   std::map<std::string, int> images;
 
