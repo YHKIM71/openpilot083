@@ -298,7 +298,7 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_extras(s);
 }
 
-/*
+
 //BB START: functions added for the display of various items
 static int bb_ui_draw_measure(UIState *s,  const char* bb_value, const char* bb_uom, const char* bb_label,
     int bb_x, int bb_y, int bb_uom_dx,
@@ -600,12 +600,12 @@ static void bb_ui_draw_UI(UIState *s)
   bb_ui_draw_measures_left(s, bb_dmr_x, bb_dmr_y-20, bb_dmr_w);
 }
 //BB END: functions added for the display of various items
-*/
+
 
 static void ui_draw_vision_footer(UIState *s) {
   ui_draw_vision_face(s);
   ui_draw_vision_brake(s);
-//  bb_ui_draw_UI(s);
+  bb_ui_draw_UI(s);
 }
 
 static float get_alert_alpha(float blink_rate) {
