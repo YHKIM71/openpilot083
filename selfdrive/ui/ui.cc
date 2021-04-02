@@ -278,9 +278,9 @@ static void update_alert(UIState *s) {
       scene.alert_size = cereal::ControlsState::AlertSize::FULL;
       s->status = STATUS_ALERT;
     }
-  }
+  } */
 }
-*/
+
 static void update_params(UIState *s) {
   const uint64_t frame = s->sm->frame;
   UIScene &scene = s->scene;
