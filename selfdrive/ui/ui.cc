@@ -370,6 +370,7 @@ static void update_status(UIState *s) {
   started_prev = s->scene.started;
 }
 
+/*
 static void update_extras(UIState *s)
 {
    UIScene &scene = s->scene;
@@ -382,6 +383,7 @@ static void update_extras(UIState *s)
       dashcam(s, touch_x, touch_y);
   }
 }
+*/
 
 void ui_update(UIState *s) {
   update_params(s);
