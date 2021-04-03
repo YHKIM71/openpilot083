@@ -9,6 +9,7 @@
 #include "common/visionimg.h"
 #include "ui.hpp"
 #include "paint.hpp"
+#include "dashcam.h"
 
 
 int write_param_float(float param, const char* param_name, bool persistent_param) {
@@ -367,6 +368,13 @@ static void update_status(UIState *s) {
     }
   }
   started_prev = s->scene.started;
+}
+
+if(s->awake && s->status != STATUS_OFFROAD)
+{
+    int touch_x = -1, touch_y = -1;
+    int touched = touch_poll(&(s->touch), &touch_x, &touch_y, 0);
+    dashcam(s, touch_x, touch_y);
 }
 
 void ui_update(UIState *s) {
