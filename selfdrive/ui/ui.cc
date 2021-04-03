@@ -390,4 +390,5 @@ void ui_update(UIState *s) {
   update_status(s);
   update_alert(s);
   update_vision(s);
+  update_extras(s);
 }
