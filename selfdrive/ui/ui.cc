@@ -278,7 +278,7 @@ static void update_alert(UIState *s) {
     scene.alert_blinking_rate = scene.controls_state.getAlertBlinkingRate();
   }
 
-/*  
+  
   // Handle controls timeout
   if (scene.deviceState.getStarted() && (s->sm->frame - scene.started_frame) > 10 * UI_FREQ) {
     const uint64_t cs_frame = s->sm->rcv_frame("controlsState");
@@ -299,7 +299,7 @@ static void update_alert(UIState *s) {
       scene.alert_size = cereal::ControlsState::AlertSize::FULL;
       s->status = STATUS_ALERT;
     }
-  }*/
+  }
 }
 
 static void update_params(UIState *s) {
@@ -372,16 +372,11 @@ static void update_status(UIState *s) {
 
 static void update_extras(UIState *s)
 {
-//   UIScene &scene = s->scene;
-//   SubMaster &sm = *(s->sm);
-
    if(s->awake && s->status != STATUS_OFFROAD)
    {
         int touch_x = -1, touch_y = -1;
-//        int touched = touch_poll(&(s->touch), &touch_x, &touch_y, 0);
         dashcam(s, touch_x, touch_y);
    }
-
 }
 
 void ui_update(UIState *s) {
