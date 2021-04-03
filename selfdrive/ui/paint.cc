@@ -12,7 +12,7 @@
 #include "sidebar.hpp"
 #include "extras.h"
 
-int border_shifter = 20; //Use this to move elements around depending on how much bdr_s is changed -wirelessnet2
+int border_shifter = 45; //Use this to move elements around depending on how much bdr_s is changed -wirelessnet2
 
 // TODO: this is also hardcoded in common/transformations/camera.py
 // TODO: choose based on frame input size
@@ -231,14 +231,14 @@ static void ui_draw_vision_face(UIState *s) {
   const int face_size = 80;
   const int face_x = (s->viz_rect.x + face_size + (bdr_s * 2));
   const int face_y = (s->viz_rect.bottom() - footer_h + ((footer_h - face_size) / 2));
-  ui_draw_circle_image(s, face_x, face_y, face_size, "driver_face", s->scene.dmonitoring_state.getIsActiveMode());
+  ui_draw_circle_image(s, face_x, face_y+border_shifter, face_size, "driver_face", s->scene.dmonitoring_state.getIsActiveMode());
 }
 
 static void ui_draw_vision_brake(UIState *s) {
   const int brake_size = 80;
   const int brake_x = (s->viz_rect.x + brake_size + (bdr_is * 2) + 255); //That 55 is kinda random -wirelessnet2
   const int brake_y = (s->viz_rect.bottom() - footer_h + ((footer_h - brake_size) / 2));
-  ui_draw_circle_image(s, brake_x, brake_y+border_shifter+25, brake_size, "brake_disk", s->scene.brakeLights);
+  ui_draw_circle_image(s, brake_x, brake_y+border_shifter, brake_size, "brake_disk", s->scene.brakeLights);
 }
 
 static void ui_draw_driver_view(UIState *s) {
