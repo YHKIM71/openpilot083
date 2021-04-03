@@ -191,6 +191,7 @@ struct CarState {
   cruiseGap @37 : Int32;
   lkMode @38 :Bool;
   autoHoldActivated @39 :Bool;
+  engineRPM @40 :Float32;
   
   struct WheelSpeeds {
     # optional wheel speeds

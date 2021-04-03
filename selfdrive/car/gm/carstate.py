@@ -25,7 +25,7 @@ class CarState(CarStateBase):
     self.autoHoldActivated = False
     self.regenPaddlePressed = 0
     self.cruiseMain = False
-
+    self.engineRPM = 0
 
   def update(self, pt_cp):
     ret = car.CarState.new_message()
@@ -90,6 +90,7 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
     ret.cruiseState.standstill = False
 #    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
+    self.engineRPM = pt_cp.vl["ECMEngineStatus"]['EngineRPM']
     self.autoHold = True
     ret.autoHoldActivated = self.autoHoldActivated
     return ret
@@ -129,6 +130,7 @@ class CarState(CarStateBase):
       ("LKAButton", "ASCMSteeringButton", 0),
       ("DistanceButton", "ASCMSteeringButton", 0),
       ("LKATorqueDelivered", "PSCMStatus", 0),
+      ("EngineRPM", "ECMEngineStatus", 0),
     ]
 
     if CP.carFingerprint == CAR.VOLT:

@@ -121,7 +121,7 @@ typedef struct UIScene {
 
   float angleSteers;
   bool brakeLights;
-  float angleSteersDes;
+  float steeringAngleDesiredDeg;
   bool recording;
   float gpsAccuracyUblox;
   float altitudeUblox;
