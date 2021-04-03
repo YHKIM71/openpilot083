@@ -370,21 +370,6 @@ static void update_status(UIState *s) {
   started_prev = s->scene.started;
 }
 
-
-static void update_extras(UIState *s)
-{
-   UIScene &scene = s->scene;
-   SubMaster &sm = *(s->sm);
-
-  if(s->awake && s->status != STATUS_OFFROAD)
-  {
-      int touch_x = -1, touch_y = -1;
-//     int touched = touch_poll(&(s->touch), &touch_x, &touch_y, 0);
-      dashcam(s, touch_x, touch_y);
-  }
-}
-
-
 void ui_update(UIState *s) {
   update_params(s);
   update_sockets(s);
