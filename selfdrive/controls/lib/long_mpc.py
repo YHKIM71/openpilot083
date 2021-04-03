@@ -107,7 +107,7 @@ class LongitudinalMpc():
 
     baseTR = interp(float(cruise_gap), [1., 2., 3.], [0.9, 1.3, 1.8])
     if v_ego <= 20.0:
-      TR = interp(-self.v_rel, [-0.1, 2.5], [baseTR, 2.1])
+      TR = interp(-self.v_rel, [-0.1, 2.25 + cruise_gap*0.25], [baseTR, 2.3-cruise_gap*0.1])
     else:
       TR = interp(-self.v_rel, [0, 3.5], [baseTR, 1.8])
       
