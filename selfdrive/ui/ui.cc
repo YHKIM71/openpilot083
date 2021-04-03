@@ -56,7 +56,7 @@ static void ui_init_vision(UIState *s) {
 void ui_init(UIState *s) {
   s->sm = new SubMaster({
     "modelV2", "controlsState", "liveCalibration", "radarState", "deviceState", "liveLocationKalman",
-    "pandaState", "carParams", "driverState", "driverMonitoringState", "sensorEvents", "carState", "ubloxGnss",
+    "pandaState", "carParams", "driverState", "driverMonitoringState", "sensorEvents", "carState", "ubloxGnss", "gpsLocationExternal",
 #ifdef QCOM2
     "roadCameraState",
 #endif
@@ -147,11 +147,19 @@ static void update_sockets(UIState *s) {
   UIScene &scene = s->scene;
   if (scene.started && sm.updated("controlsState")) {
     scene.controls_state = sm["controlsState"].getControlsState();
-  }
-  if (sm.updated("carState")) {
-    scene.car_state = sm["carState"].getCarState();
+    scene.angleSteers = scene.controls_state.getAngleSteers();
+    scene.steerOverride= scene.controls_state.getSteerOverride();
+    scene.output_scale = scene.controls_state.getLateralControlState().getPidState().getOutput();
+    scene.angleSteersDes = scene.controls_state.getAngleSteersDes();
+
   }
   if (sm.updated("radarState")) {
+    auto data = sm["radarState"].getRadarState();
+    scene.lead_data[0] = data.getLeadOne();
+    scene.lead_data[1] = data.getLeadTwo();
+    scene.lead_v_rel = scene.lead_data[0].getVRel();
+    scene.lead_d_rel = scene.lead_data[0].getDRel();
+    scene.lead_status = scene.lead_data[0].getStatus();
     std::optional<cereal::ModelDataV2::XYZTData::Reader> line;
     if (sm.rcv_frame("modelV2") > 0) {
       line = sm["modelV2"].getModelV2().getPosition();
@@ -193,6 +201,9 @@ static void update_sockets(UIState *s) {
     if (data.which() == cereal::UbloxGnss::MEASUREMENT_REPORT) {
       scene.satelliteCount = data.getMeasurementReport().getNumMeas();
     }
+    auto data2 = sm["gpsLocationExternal"].getGpsLocationExternal();
+    scene.gpsAccuracyUblox = data2.getAccuracy();
+    scene.altitudeUblox = data2.getAltitude();
   }
   if (sm.updated("liveLocationKalman")) {
     scene.gpsOK = sm["liveLocationKalman"].getLiveLocationKalman().getGpsOK();
@@ -211,6 +222,14 @@ static void update_sockets(UIState *s) {
   } else if ((sm.frame - sm.rcv_frame("driverMonitoringState")) > UI_FREQ/2) {
     scene.driver_view = false;
   }
+  if (sm.updated("carState")) {
+    auto data = sm["carState"].getCarState();
+    scene.brakeLights = data.getBrakeLights();
+    scene.engineRPM = data.getEngineRPM();
+    scene.aEgo = data.getAEgo();
+    scene.steeringTorqueEps = data.getSteeringTorqueEps();
+  } 
+
   if (sm.updated("sensorEvents")) {
     for (auto sensor : sm["sensorEvents"].getSensorEvents()) {
       if (sensor.which() == cereal::SensorEventData::LIGHT) {
