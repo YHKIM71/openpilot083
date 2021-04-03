@@ -507,6 +507,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   steeringAngleDesiredDeg @29 :Float32;
   curvature @37 :Float32;  # path curvature from vehicle model
   forceDecel @51 :Bool;
+  steerOverride @20 :Bool;
 
   # UI alerts
   alertText1 @24 :Text;
@@ -623,7 +624,6 @@ struct ControlsState @0x97ff69c53601abf1 {
   vCurvatureDEPRECATED @46 :Float32;
   mapValidDEPRECATED @49 :Bool;
   jerkFactorDEPRECATED @12 :Float32;
-  steerOverrideDEPRECATED @20 :Bool;
 }
 
 struct ModelDataV2 {
