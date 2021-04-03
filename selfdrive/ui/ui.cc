@@ -150,7 +150,7 @@ static void update_sockets(UIState *s) {
     scene.angleSteers = scene.controls_state.getAngleSteers();
     scene.steerOverride= scene.controls_state.getSteerOverride();
     scene.output_scale = scene.controls_state.getLateralControlState().getPidState().getOutput();
-    scene.angleSteersDes = scene.controls_state.getAngleSteersDes();
+    scene.steeringAngleDesiredDeg = scene.controls_state.getsteeringAngleDesiredDeg();
 
   }
   if (sm.updated("radarState")) {
