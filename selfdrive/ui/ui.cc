@@ -190,7 +190,7 @@ static void update_sockets(UIState *s) {
   if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
     scene.cpuTemp = scene.deviceState.getCpuTempC()[0];
-    scene.cpuPerc = scene.deviceState.getCpuUsagePercent;
+    scene.cpuPerc = scene.deviceState.getCpuUsagePercent();
   }
   if (sm.updated("pandaState")) {
     auto pandaState = sm["pandaState"].getPandaState();
