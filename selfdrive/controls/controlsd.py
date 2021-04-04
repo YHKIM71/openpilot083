@@ -528,7 +528,7 @@ class Controls:
     controlsState.active = self.active
     controlsState.vEgo = CS.vEgo
     controlsState.vEgoRaw = CS.vEgoRaw
-    controlsState.angleSteers = CS.steeringAngle
+    controlsState.angleSteers = CS.steeringAngleDeg
     controlsState.curvature = curvature
     controlsState.steeringAngleDesiredDeg = angle_steers_des
     controlsState.state = self.state
