@@ -189,6 +189,8 @@ static void update_sockets(UIState *s) {
   }
   if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
+    scene.cpuTemp = scene.deviceState.getCpuTempC()[0];
+    scene.cpuPerc = scene.deviceState.getCpuUsagePercent;
   }
   if (sm.updated("pandaState")) {
     auto pandaState = sm["pandaState"].getPandaState();
@@ -197,11 +199,6 @@ static void update_sockets(UIState *s) {
   } else if ((s->sm->frame - s->sm->rcv_frame("pandaState")) > 5*UI_FREQ) {
     scene.pandaType = cereal::PandaState::PandaType::UNKNOWN;
   }
-/*  if (sm.updated("thermal")) {
-    scene.thermal = sm["thermal"].getThermal();
-    s->scene.cpuTemp = scene.thermal.getCpu()[0];
-    s->scene.cpuPerc = scene.thermal.getCpuPerc();
-  }*/
   if (sm.updated("ubloxGnss")) {
     auto data = sm["ubloxGnss"].getUbloxGnss();
     if (data.which() == cereal::UbloxGnss::MEASUREMENT_REPORT) {
