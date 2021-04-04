@@ -230,6 +230,7 @@ static void update_sockets(UIState *s) {
     scene.brakeLights = data.getBrakeLights();
     scene.engineRPM = data.getEngineRPM();
     scene.aEgo = data.getAEgo();
+    scene.vEgo = data.getVEgo();
     scene.steeringTorqueEps = data.getSteeringTorqueEps();
   } 
 
