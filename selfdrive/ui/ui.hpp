@@ -131,6 +131,7 @@ typedef struct UIScene {
   float output_scale;
   float steeringTorqueEps;
   float aEgo;
+  float vEgo
   float cpuTemp;
   int cpuPerc;
 
