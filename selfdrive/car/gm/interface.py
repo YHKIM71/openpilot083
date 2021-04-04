@@ -123,7 +123,7 @@ class CarInterface(CarInterfaceBase):
 
     cruiseEnabled = self.CS.pcm_acc_status != AccState.OFF
     ret.cruiseState.enabled = cruiseEnabled
-
+    ret.engineRPM = self.CS.engineRPM
     ret.cruiseGap = self.CS.follow_level
     
     ret.canValid = self.cp.can_valid
