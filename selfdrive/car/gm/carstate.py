@@ -11,6 +11,7 @@ from selfdrive.car.gm.values import DBC, CAR, AccState, CanBus, \
 class CarState(CarStateBase):
   def __init__(self, CP):
     super().__init__(CP)
+    self.CP = CP
     can_define = CANDefine(DBC[CP.carFingerprint]['pt'])
 #    self.ch_cp = self.get_chassis_can_parser(CP, canbus)
     self.shifter_values = can_define.dv["ECMPRDNL"]["PRNDL"]
