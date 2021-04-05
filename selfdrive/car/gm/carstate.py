@@ -149,4 +149,4 @@ class CarState(CarStateBase):
       ("FrictionBrakePressure", "EBCMFrictionBrakeStatus", 0),
     ]
 
-  return CANParser(DBC[CP.carFingerprint]['chassis'], signals, [], CanBus.CHASSIS)
+    return CANParser(DBC[CP.carFingerprint]['chassis'], signals, [], CanBus.CHASSIS)
