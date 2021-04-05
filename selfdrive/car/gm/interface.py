@@ -6,14 +6,10 @@ from selfdrive.car.gm.values import CAR, CruiseButtons, \
                                     AccState
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
-from selfdrive.car.gm.carstate import CarState, CruiseButtons, get_powertrain_can_parser, get_chassis_can_parser
 ButtonType = car.CarState.ButtonEvent.Type
 EventName = car.CarEvent.EventName
 
 class CarInterface(CarInterfaceBase):
-  def __init__(self, CP, CarController):
-    self.CS = CarState(CP)
-    self.ch_cp = get_chassis_can_parser(CP)
 
   @staticmethod
   def compute_gb(accel, speed):
@@ -121,8 +117,8 @@ class CarInterface(CarInterfaceBase):
   # returns a car.CarState
   def update(self, c, can_strings):
     self.cp.update_strings(can_strings)
-    self.ch_cp.update_strings(can_strings)
-    self.CS.update(self.cp, self.ch_cp)
+    self.cp_body.update_strings(can_strings)
+    self.CS.update(self.cp, self.cp_body)
 
     ret = self.CS.update(self.cp)
 
