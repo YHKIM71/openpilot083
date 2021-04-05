@@ -11,7 +11,7 @@ from selfdrive.car.gm.values import DBC, CAR, AccState, CanBus, \
 class CarState(CarStateBase):
   def __init__(self, CP):
     super().__init__(CP)
-    self.CP = CP
+#    self.CP = CP
     can_define = CANDefine(DBC[CP.carFingerprint]['pt'])
     self.shifter_values = can_define.dv["ECMPRDNL"]["PRNDL"]
     self.prev_distance_button = 0
