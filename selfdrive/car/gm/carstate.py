@@ -143,7 +143,7 @@ class CarState(CarStateBase):
 
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, [], CanBus.POWERTRAIN)
 
-$  def get_chassis_can_parser(CP):
+#  def get_chassis_can_parser(CP):
 #    # this function generates lists for signal, messages and initial values
 #    signals = [
 #        # sig_name, sig_address, default
