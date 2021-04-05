@@ -26,6 +26,7 @@ class CarState(CarStateBase):
     self.regenPaddlePressed = 0
     self.cruiseMain = False
     self.engineRPM = 0
+    self.frictionBrakesActive = False
 
   def update(self, pt_cp):
     ret = car.CarState.new_message()
@@ -86,7 +87,8 @@ class CarState(CarStateBase):
     if self.car_fingerprint == CAR.VOLT:
       self.regenPaddlePressed = bool(pt_cp.vl["EBCMRegenPaddle"]['RegenPaddle'])
       ret.brakePressed = ret.brakePressed or self.regenPaddlePressed
-      
+     # Update Friction Brakes from Chassis Canbus
+    self.frictionBrakesActive = bool(ch_cp.vl["EBCMFrictionBrakeStatus"]["FrictionBrakePressure"] != 0)  
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
     ret.cruiseState.standstill = False
 #    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
@@ -139,3 +141,12 @@ class CarState(CarStateBase):
       ]
 
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, [], CanBus.POWERTRAIN)
+
+  def get_chassis_can_parser(CP):
+    # this function generates lists for signal, messages and initial values
+    signals = [
+        # sig_name, sig_address, default
+      ("FrictionBrakePressure", "EBCMFrictionBrakeStatus", 0),
+    ]
+
+  return CANParser(DBC[CP.carFingerprint]['chassis'], signals, [], CanBus.CHASSIS)
