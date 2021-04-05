@@ -89,7 +89,7 @@ class CarState(CarStateBase):
       self.regenPaddlePressed = bool(pt_cp.vl["EBCMRegenPaddle"]['RegenPaddle'])
       ret.brakePressed = ret.brakePressed or self.regenPaddlePressed
      # Update Friction Brakes from Chassis Canbus
-    ret.brakeLights = bool(self.get_chassis_can_parser(CP).vl["EBCMFrictionBrakeStatus"]["FrictionBrakePressure"] != 0)
+    ret.brakeLights = bool(self.get_chassis_can_parser(self.CP).vl["EBCMFrictionBrakeStatus"]["FrictionBrakePressure"] != 0)
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
     ret.cruiseState.standstill = False
 #    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
