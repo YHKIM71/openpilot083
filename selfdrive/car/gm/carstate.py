@@ -13,7 +13,6 @@ class CarState(CarStateBase):
     super().__init__(CP)
     self.CP = CP
     can_define = CANDefine(DBC[CP.carFingerprint]['pt'])
-#    self.ch_cp = self.get_chassis_can_parser(CP, canbus)
     self.shifter_values = can_define.dv["ECMPRDNL"]["PRNDL"]
     self.prev_distance_button = 0
     self.prev_lka_button = 0
@@ -29,7 +28,7 @@ class CarState(CarStateBase):
     self.engineRPM = 0
     self.brakeLights = False
 
-  def update(self, pt_cp):
+  def update(self, pt_cp, ch_cp):
     ret = car.CarState.new_message()
 
     self.prev_cruise_buttons = self.cruise_buttons
@@ -89,7 +88,7 @@ class CarState(CarStateBase):
       self.regenPaddlePressed = bool(pt_cp.vl["EBCMRegenPaddle"]['RegenPaddle'])
       ret.brakePressed = ret.brakePressed or self.regenPaddlePressed
      # Update Friction Brakes from Chassis Canbus
-#    ret.brakeLights = bool(self.get_chassis_can_parser(self.CP).vl["EBCMFrictionBrakeStatus"]["FrictionBrakePressure"] != 0)
+    ret.brakeLights = bool(ch_cp).vl["EBCMFrictionBrakeStatus"]["FrictionBrakePressure"] != 0)
     ret.cruiseState.enabled = self.pcm_acc_status != AccState.OFF
     ret.cruiseState.standstill = False
 #    ret.cruiseState.standstill = self.pcm_acc_status == AccState.STANDSTILL
