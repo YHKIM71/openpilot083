@@ -1,7 +1,6 @@
 #include <time.h>
-#include <dirent.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+//#include <dirent.h>
 
 #define CAPTURE_STATE_NONE 0
 #define CAPTURE_STATE_CAPTURING 1
@@ -85,7 +84,7 @@ void save_file(char *videos_dir, char *filename) {
 }
 
 void stop_capture() {
-  char videos_dir[50] = "/storage/emulated/0/videos";
+  char videos_dir[50] = "/sdcard/videos";
 
   if (captureState == CAPTURE_STATE_CAPTURING) {
     system("killall -SIGINT screenrecord");
@@ -107,7 +106,7 @@ void stop_capture() {
 void start_capture() {
   captureState = CAPTURE_STATE_CAPTURING;
   char cmd[128] = "";
-  char videos_dir[50] = "/storage/emulated/0/videos";
+  char videos_dir[50] = "/sdcard/videos";
 
   //////////////////////////////////
   // NOTE: make sure videos_dir folder exists on the device!
@@ -119,7 +118,7 @@ void start_capture() {
   /*if (captureNum == 0 && files_created == 0) {
     DIR *dir;
     struct dirent *ent;
-    if ((dir = opendir ("/storage/emulated/0/videos")) != NULL) {
+    if ((dir = opendir ("/sdcard/videos")) != NULL) {
       while ((ent = readdir (dir)) != NULL) {
         strcpy(filenames[files_created++], ent->d_name);
       }
@@ -142,8 +141,8 @@ void start_capture() {
   char filename[64];
   struct tm tm = get_time_struct();
   snprintf(filename,sizeof(filename),"%04d%02d%02d-%02d%02d%02d.mp4", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-  snprintf(cmd,sizeof(cmd),"screenrecord --size 1280x720 --bit-rate 5000000 %s/%s&",videos_dir,filename);
-  //snprintf(cmd,sizeof(cmd),"screenrecord --size 960x540 --bit-rate 5000000 %s/%s&",videos_dir,filename);
+  //snprintf(cmd,sizeof(cmd),"screenrecord --size 1280x720 --bit-rate 10000000 %s/%s&",videos_dir,filename);
+  snprintf(cmd,sizeof(cmd),"screenrecord --size 960x540 --bit-rate 5000000 %s/%s&",videos_dir,filename);
   strcpy(filenames[captureNum],filename);
 
   printf("Capturing to file: %s\n",cmd);
@@ -176,8 +175,8 @@ bool screen_lock_button_clicked(int touch_x, int touch_y, dashcam_element el) {
 }
 
 bool screen_button_clicked(int touch_x, int touch_y) {
-  if (touch_x >= 1660 && touch_x <= 1810) {
-    if (touch_y >= 885 && touch_y <= 1035) {
+  if (touch_x >= 1660 && touch_x <= 1820) {
+    if (touch_y >= 885 && touch_y <= 1055) {
       return true;
     }
   }
@@ -229,7 +228,6 @@ void draw_lock_button(UIState *s) {
   int btn_h = 150;
   int btn_x = 1920 - btn_w - 150;
   int btn_y = 1080 - btn_h;
-  //int imgw, imgh;
   float alpha = 0.3f;
 
   if (!lock_image) {
@@ -242,8 +240,8 @@ void draw_lock_button(UIState *s) {
   }
 
   nvgBeginPath(s->vg);
-  NVGpaint imgPaint = nvgImagePattern(s->vg, btn_x-125, btn_y-45, 150, 150, 0, lock_image, alpha);
-  nvgRoundedRect(s->vg, btn_x-125, btn_y-45, 150, 150, 100);
+  NVGpaint imgPaint = nvgImagePattern(s->vg, btn_x-125, btn_y-30, 150, 150, 0, lock_image, alpha);
+  nvgRoundedRect(s->vg, btn_x-125, btn_y-30, 150, 150, 100);
   nvgFillPaint(s->vg, imgPaint);
   nvgFill(s->vg);
 
@@ -258,7 +256,8 @@ void draw_lock_button(UIState *s) {
 
 static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
   // Set button to bottom left of screen
-  if (s->vipc_client->connected){
+  //if (s->vision_connected && s->plus_state == 0) {
+  if (s->vision_connected){
 
     if (captureState == CAPTURE_STATE_CAPTURING) {
       draw_lock_button(s);
@@ -266,10 +265,10 @@ static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
 
     int btn_w = 150;
     int btn_h = 150;
-    int btn_x = 1920 - btn_w - 110;
-    int btn_y = 1080 - btn_h - 45;
+    int btn_x = 1920 - btn_w+12;
+    int btn_y = 1080 - btn_h+5; //Shift REC button down some -wirelessnet2
     nvgBeginPath(s->vg);
-      nvgRoundedRect(s->vg, btn_x, btn_y, btn_w, btn_h, 100);
+      nvgRoundedRect(s->vg, btn_x-110+12, btn_y-45+5, btn_w, btn_h, 100); //Shift REC button down some -wirelessnet2
       nvgStrokeColor(s->vg, nvgRGBA(255,255,255,80));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
@@ -285,8 +284,7 @@ static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
       else {
         nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 200));
       }
-      nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
-      nvgText(s->vg, btn_x+btn_w/2, btn_y+btn_h/2, "REC", NULL);
+      nvgText(s->vg,btn_x-35+12,btn_y+50+5,"REC",NULL); //Shift REC button down some -wirelessnet2
   }
 
   if (captureState == CAPTURE_STATE_CAPTURING) {
@@ -321,10 +319,7 @@ void screen_toggle_lock() {
   }
 }
 
-bool dashcam( UIState *s, int touch_x, int touch_y ) {
-
-  bool touched = false;
-  
+void dashcam( UIState *s, int touch_x, int touch_y ) {
   screen_draw_button(s, touch_x, touch_y);
   if (screen_button_clicked(touch_x,touch_y)) {
     click_elapsed_time = get_time() - click_time;
@@ -332,23 +327,15 @@ bool dashcam( UIState *s, int touch_x, int touch_y ) {
     if (click_elapsed_time > 0) {
       click_time = get_time() + 1;
       screen_toggle_record_state();
-      touched = true;
     }
   }
 
   if (screen_lock_button_clicked(touch_x,touch_y,lock_button)) {
     screen_toggle_lock();
-    touched = true;
   }
-  if (!s->vipc_client->connected) {
+  if (!s->started) {
     // Assume car is not in drive so stop recording
     stop_capture();
   }
-
-  if (s->scene.vEgo < 1.5 && !s->scene.controls_state.getEnabled()) {
-    stop_capture();
-  }
-  //s->scene.recording = (captureState != CAPTURE_STATE_NOT_CAPTURING);
-  
-  return touched;
+  s->scene.recording = (captureState != CAPTURE_STATE_NOT_CAPTURING);
 }
