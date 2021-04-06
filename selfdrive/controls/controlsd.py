@@ -393,7 +393,7 @@ class Controls:
     params = self.sm['liveParameters']
     x = max(params.stiffnessFactor, 0.1)
 #    sr = max(params.steerRatio, 0.1)
-    sr = CP.steerRatio
+    sr = self.CP.steerRatio
     self.VM.update_params(x, sr)
 
     lat_plan = self.sm['lateralPlan']
