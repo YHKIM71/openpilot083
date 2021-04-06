@@ -118,9 +118,8 @@ class CarInterface(CarInterfaceBase):
   def update(self, c, can_strings):
     self.cp.update_strings(can_strings)
     self.cp_body.update_strings(can_strings)
-    self.CS.update(self.cp, self.cp_body)
 
-    ret = self.CS.update(self.cp)
+    ret = self.CS.update(self.cp, self.cp_body)
 
     cruiseEnabled = self.CS.pcm_acc_status != AccState.OFF
     ret.cruiseState.enabled = cruiseEnabled
