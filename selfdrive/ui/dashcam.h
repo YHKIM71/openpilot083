@@ -257,7 +257,7 @@ void draw_lock_button(UIState *s) {
 static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
   // Set button to bottom left of screen
   //if (s->vision_connected && s->plus_state == 0) {
-  if (s->vision_connected){
+  if (s->vipc_client->connected){
 
     if (captureState == CAPTURE_STATE_CAPTURING) {
       draw_lock_button(s);
@@ -333,7 +333,7 @@ void dashcam( UIState *s, int touch_x, int touch_y ) {
   if (screen_lock_button_clicked(touch_x,touch_y,lock_button)) {
     screen_toggle_lock();
   }
-  if (!s->started) {
+  if (!s->vipc_client->connected) {
     // Assume car is not in drive so stop recording
     stop_capture();
   }
