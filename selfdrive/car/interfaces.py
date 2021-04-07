@@ -195,5 +195,5 @@ class CarStateBase:
     return None
 
   @staticmethod
-  def get_body_can_parser(CP):
-    return None
+#  def get_body_can_parser(CP):
+#    return None
