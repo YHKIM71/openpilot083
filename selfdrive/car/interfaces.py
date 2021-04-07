@@ -20,7 +20,7 @@ MAX_CTRL_SPEED = (V_CRUISE_MAX + 4) * CV.KPH_TO_MS  # 135 + 4 = 86 mph
 
 class CarInterfaceBase():
   def __init__(self, CP, CarController, CarState):
-    self.CP = CP
+#    self.CP = CP
     self.VM = VehicleModel(CP)
 
     self.frame = 0
@@ -38,7 +38,7 @@ class CarInterfaceBase():
 
   @staticmethod
   def calc_accel_override(a_ego, a_target, v_ego, v_target):
-    return 1.
+    return 1
 
   @staticmethod
   def compute_gb(accel, speed):
@@ -154,7 +154,7 @@ class RadarInterfaceBase():
 
 class CarStateBase:
   def __init__(self, CP):
-    self.CP = CP
+#    self.CP = CP
     self.car_fingerprint = CP.carFingerprint
     self.out = car.CarState.new_message()
 
