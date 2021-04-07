@@ -194,6 +194,6 @@ class CarStateBase:
   def get_cam_can_parser(CP):
     return None
 
-  @staticmethod
+#  @staticmethod
 #  def get_body_can_parser(CP):
 #    return None
