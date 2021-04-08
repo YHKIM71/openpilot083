@@ -142,6 +142,7 @@ class CarState(CarStateBase):
 
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, [], CanBus.POWERTRAIN)
 
+  @staticmethod
   def get_body_can_parser(CP):
     # this function generates lists for signal, messages and initial values
     signals = [
