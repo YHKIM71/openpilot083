@@ -20,7 +20,7 @@ MAX_CTRL_SPEED = (V_CRUISE_MAX + 4) * CV.KPH_TO_MS  # 135 + 4 = 86 mph
 
 class CarInterfaceBase():
   def __init__(self, CP, CarController, CarState):
-#    self.CP = CP
+    self.CP = CP
     self.VM = VehicleModel(CP)
 
     self.frame = 0
