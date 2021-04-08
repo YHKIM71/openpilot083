@@ -102,13 +102,24 @@ class CarInterface(CarInterfaceBase):
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront,
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
-    ret.longitudinalTuning.kpBP = [5., 35.]
-    ret.longitudinalTuning.kpV = [2.4, 1.5]
-    ret.longitudinalTuning.kiBP = [0.]
-    ret.longitudinalTuning.kiV = [0.36]
+    ret.longitudinalTuning.kf = 0.3
+    ret.gasMaxBP = [0.]
+    ret.gasMaxV = [0.5]
 
     ret.stoppingControl = True
     ret.startAccel = 0.8
+
+    ret.longitudinalTuning.deadzoneBP = [0., 8.05]
+    ret.longitudinalTuning.deadzoneV = [.0, .14]
+
+    ret.longitudinalTuning.kpBP = [0., 5., 10., 20.]
+    ret.longitudinalTuning.kpV = [1.8, 2.7, 4.0, 3.0]
+    ret.longitudinalTuning.kiBP = [0., 3., 7., 12., 20., 27.]
+    ret.longitudinalTuning.kiV = [.05, .07, .09, .15, .13, .1]
+
+    ret.stoppingBrakeRate = 0.1 # reach stopping target smoothly
+    ret.startingBrakeRate = 2.0 # release brakes fast
+    ret.startAccel = 1.2 # Accelerate from 0 faster
 
     ret.steerLimitTimer = 0.4
     ret.radarTimeStep = 0.0667  # GM radar runs at 15Hz instead of standard 20Hz
