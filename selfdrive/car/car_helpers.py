@@ -13,7 +13,7 @@ from cereal import car
 EventName = car.CarEvent.EventName
 
 
-def get_startup_event(car_recognized, controller_available):
+def get_startup_event(car_recognized, controller_available, panda_type):
 #  if comma_remote and tested_branch:
 #    event = EventName.startup
 #  else:

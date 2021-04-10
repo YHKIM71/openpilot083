@@ -52,14 +52,11 @@ Panda::Panda(){
   if (err != 0) { goto fail; }
 
   hw_type = get_hw_type();
-
   is_pigeon =
     (hw_type == cereal::PandaState::PandaType::GREY_PANDA) ||
     (hw_type == cereal::PandaState::PandaType::BLACK_PANDA) ||
     (hw_type == cereal::PandaState::PandaType::UNO) ||
     (hw_type == cereal::PandaState::PandaType::DOS);
-
-
   has_rtc = (hw_type == cereal::PandaState::PandaType::UNO) ||
             (hw_type == cereal::PandaState::PandaType::DOS);
 

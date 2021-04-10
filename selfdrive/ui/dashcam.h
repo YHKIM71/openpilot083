@@ -1,6 +1,7 @@
 #include <time.h>
+#include <dirent.h>
+#include <sys/types.h>
 #include <sys/stat.h>
-//#include <dirent.h>
 
 #define CAPTURE_STATE_NONE 0
 #define CAPTURE_STATE_CAPTURING 1
@@ -84,7 +85,7 @@ void save_file(char *videos_dir, char *filename) {
 }
 
 void stop_capture() {
-  char videos_dir[50] = "/sdcard/videos";
+  char videos_dir[50] = "/storage/emulated/0/videos";
 
   if (captureState == CAPTURE_STATE_CAPTURING) {
     system("killall -SIGINT screenrecord");
@@ -106,7 +107,7 @@ void stop_capture() {
 void start_capture() {
   captureState = CAPTURE_STATE_CAPTURING;
   char cmd[128] = "";
-  char videos_dir[50] = "/sdcard/videos";
+  char videos_dir[50] = "/storage/emulated/0/videos";
 
   //////////////////////////////////
   // NOTE: make sure videos_dir folder exists on the device!
@@ -118,7 +119,7 @@ void start_capture() {
   /*if (captureNum == 0 && files_created == 0) {
     DIR *dir;
     struct dirent *ent;
-    if ((dir = opendir ("/sdcard/videos")) != NULL) {
+    if ((dir = opendir ("/storage/emulated/0/videos")) != NULL) {
       while ((ent = readdir (dir)) != NULL) {
         strcpy(filenames[files_created++], ent->d_name);
       }
@@ -228,6 +229,7 @@ void draw_lock_button(UIState *s) {
   int btn_h = 150;
   int btn_x = 1920 - btn_w - 150;
   int btn_y = 1080 - btn_h;
+  //int imgw, imgh;
   float alpha = 0.3f;
 
   if (!lock_image) {
@@ -256,8 +258,7 @@ void draw_lock_button(UIState *s) {
 
 static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
   // Set button to bottom left of screen
-  //if (s->vision_connected && s->plus_state == 0) {
-  if (true){ //THIS IS KINDA SHIT!! NEED TO COME BACK TO THIS!! EXISTING CODE: s->vision_connected (depreciated from ui.hpp) -wirelessnet2
+  if (s->vipc_client->connected){
 
     if (captureState == CAPTURE_STATE_CAPTURING) {
       draw_lock_button(s);
@@ -319,7 +320,6 @@ void screen_toggle_lock() {
     locked_files[captureNum] = 1;
   }
 }
-
 
 bool dashcam( UIState *s, int touch_x, int touch_y ) {
 
