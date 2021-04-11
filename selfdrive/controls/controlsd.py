@@ -68,11 +68,12 @@ class Controls:
 
     # wait for one pandaState and one CAN packet
     hw_type = messaging.recv_one(self.sm.sock['pandaState']).pandaState.pandaType
-    has_relay = hw_type in [PandaType.blackPanda, PandaType.uno, PandaType.dos]
+#    has_relay = hw_type in [PandaType.blackPanda, PandaType.uno, PandaType.dos]
     print("Waiting for CAN messages...")
     get_one_can(self.can_sock)
 
-    self.CI, self.CP = get_car(self.can_sock, self.pm.sock['sendcan'], has_relay)
+#    self.CI, self.CP = get_car(self.can_sock, self.pm.sock['sendcan'], has_relay)
+    self.CI, self.CP = get_car(self.can_sock, self.pm.sock['sendcan'])
 
     # read params
     params = Params()
